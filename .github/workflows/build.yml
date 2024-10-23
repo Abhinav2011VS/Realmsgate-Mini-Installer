@@ -32,10 +32,22 @@ jobs:
           $source = './latest/Realmsgate-Mini-Windows-Installer.ps1'  # Adjust if necessary
           $target = "Realmsgate-Mini-${{ steps.get_version.outputs.version }}-Windows-Installer.exe"
           $ps2exePath = (Get-Module -ListAvailable -Name ps2exe).ModuleBase + '\ps2exe.ps1'
-          & $ps2exePath -InputFile $source -OutputFile $target -NoConsole  # Use the script directly
+          
+          # Output for debugging
+          Write-Host "Compiling $source to $target"
+          
+          & $ps2exePath -InputFile $source -OutputFile $target -NoConsole
+
+          # Check if the target file was created
+          if (Test-Path $target) {
+              Write-Host "Executable created successfully: $target"
+          } else {
+              Write-Host "Failed to create executable: $target"
+          }
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Realmsgate-Mini-Installer
           path: "Realmsgate-Mini-${{ steps.get_version.outputs.version }}-Windows-Installer.exe"
+          if-no-files-found: warn
