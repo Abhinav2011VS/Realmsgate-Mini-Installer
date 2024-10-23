@@ -21,13 +21,13 @@ jobs:
       - name: Read version
         id: get_version
         run: |
-          $version = Get-Content -Path 'repo/version/version.txt'  # Adjust the path to your version file
+          $version = Get-Content -Path './version/version.txt'  # Corrected path
           Write-Output "::set-output name=version::$version"
 
       - name: Compile PowerShell script to executable
         shell: pwsh
         run: |
-          $source = 'repo/latest/Realmsgate-Mini-Windows-Installer.ps1'
+          $source = './latest/Realmsgate-Mini-Windows-Installer.ps1'  # Adjust if necessary
           $target = "Realmsgate-Mini-${{ steps.get_version.outputs.version }}-Windows-Installer.exe"
           Invoke-ps2exe -InputFile $source -OutputFile $target -NoConsole
 
