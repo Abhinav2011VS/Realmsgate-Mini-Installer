@@ -49,5 +49,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Realmsgate-Mini-Installer
-          path: "*.exe"  # Use wildcard to match any .exe file
+          path: ~/*.exe  # Use wildcard to match any .exe file
           if-no-files-found: warn
