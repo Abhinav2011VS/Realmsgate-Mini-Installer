@@ -17,6 +17,7 @@ jobs:
         shell: pwsh
         run: |
           Install-Module -Name ps2exe -Force -Scope CurrentUser
+          Import-Module ps2exe  # Ensure the module is imported
 
       - name: Read version
         id: get_version
