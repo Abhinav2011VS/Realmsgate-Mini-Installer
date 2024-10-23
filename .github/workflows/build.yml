@@ -30,7 +30,7 @@ jobs:
         shell: pwsh
         run: |
           $source = './latest/Realmsgate-Mini-Windows-Installer.ps1'  # Adjust if necessary
-          $target = "Realmsgate-Mini-${{ steps.get_version.outputs.version }}-Windows-Installer.exe"
+          $target = "./latest/Realmsgate-Mini-${{ steps.get_version.outputs.version }}-Windows-Installer.exe"
           $ps2exePath = (Get-Module -ListAvailable -Name ps2exe).ModuleBase + '\ps2exe.ps1'
           
           # Output for debugging
@@ -49,5 +49,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Realmsgate-Mini-Installer
-          path: ~/*.exe  # Use wildcard to match any .exe file
+          path: latest/*.exe  # Use wildcard to match any .exe file
           if-no-files-found: warn
