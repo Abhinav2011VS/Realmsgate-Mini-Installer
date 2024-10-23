@@ -16,13 +16,14 @@ jobs:
       - name: Install PowerShell Module
         shell: pwsh
         run: |
-          Install-Module -Name ps2exe -Force -Scope CurrentUser
-          Import-Module ps2exe  # Ensure the module is imported
+          Install-Module -Name ps2exe -Force -Scope CurrentUser -AllowClobber
+          Import-Module ps2exe -Force  # Ensure the module is imported
+          Get-Module -ListAvailable | Select-Object Name, Version  # Check installed modules
 
       - name: Read version
         id: get_version
         run: |
-          $version = Get-Content -Path './version/version.txt'  # Corrected path
+          $version = Get-Content -Path './version/version.txt'  # Adjust the path as needed
           Write-Output "::set-output name=version::$version"
 
       - name: Compile PowerShell script to executable
@@ -30,7 +31,8 @@ jobs:
         run: |
           $source = './latest/Realmsgate-Mini-Windows-Installer.ps1'  # Adjust if necessary
           $target = "Realmsgate-Mini-${{ steps.get_version.outputs.version }}-Windows-Installer.exe"
-          Invoke-ps2exe -InputFile $source -OutputFile $target -NoConsole
+          $ps2exePath = (Get-Module -ListAvailable -Name ps2exe).ModuleBase + '\ps2exe.ps1'
+          & $ps2exePath -InputFile $source -OutputFile $target -NoConsole  # Use the script directly
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
